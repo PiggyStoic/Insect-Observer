@@ -1,0 +1,16 @@
+<launch>
+  <arg name="model" />
+  <arg name="gui" default="False" />
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find iw_sim)/config/Insect_Watcher_control.yaml" command="load"/>
+ 
+  <!-- load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+	output="screen" ns="/INSECT_WATCHER" args="joint_state_controller
+	xslider_position_controller yslider_position_controller"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+    <remap from="/jointstate" to="/INSECT_WATCHER/joint_state" />
+  </node>
+</launch>

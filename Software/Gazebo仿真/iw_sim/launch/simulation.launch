@@ -1,0 +1,26 @@
+<launch>
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+    <!-- <include file="$(find iw_sim)/launch/iw_controller.launch" /> -->
+    <param name="robot_description" command="$(find xacro)/xacro $(find iw_sim)/xacro/iw_gazebo.xacro" />
+    <node
+    pkg="gazebo_ros" type="spawn_model" name="model" args="-urdf -model Insect_Watcher -param robot_description" />
+
+    
+    <!-- Load joint controller configurations from YAML file to parameter server -->
+    <rosparam file="$(find iw_sim)/config/Insect_Watcher_control.yaml" command="load"/>
+ 
+    <!-- load the controllers -->
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/INSECT_WATCHER" args="joint_state_controller
+    xslider_position_controller yslider_position_controller"/>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+        respawn="false" output="screen">
+        <remap from="/jointstate" to="/INSECT_WATCHER/joint_state" />
+    </node>
+ 
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" /> -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find iw_sim)/config/urdf.rviz" />
+
+</launch>

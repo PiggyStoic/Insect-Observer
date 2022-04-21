@@ -1,0 +1,15 @@
+INSECT_WATCHER:
+  # 发布机器人关节状态信息
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish: 50   #频率为50Hz
+
+  xslider_position_controller:
+    type: position_controllers/JointPositionController
+    joint: xslider_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+  
+  yslider_position_controller:
+    type: position_controllers/JointPositionController
+    joint: yslider_joint
+    pid: {p: 100.0, i: 0.01, d: 10.0}
