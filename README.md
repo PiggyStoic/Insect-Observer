@@ -1,5 +1,3 @@
-# Insect-Watcher
-
 # 一、Gazebo 仿真
 
 ## 功能包依赖
